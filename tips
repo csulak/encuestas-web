@@ -1,0 +1,29 @@
+para el backend:
+creas una carpeta vacia en vs code en una consola: 
+firebase login
+firebase init functions
+
+cambias las functions que queres y despues cada vez que le haces una modificacion
+firebase deploy --only functions
+
+
+
+
+para el frontend:
+creas un proyecto de react con npx create-react-app nombreproyecto
+
+adentro de la carpeta del proyecto creado: npm i firebase
+
+
+
+
+en firebase:
+crear un proyecto nuevo
+en authentication habilitar en la pestaña sign in method gmail
+
+en database crear las colecciones
+
+
+
+
+una vez que termino y levantaste todo. en firebase en Database cambiar las reglas para agregar seguridad

@@ -2,6 +2,7 @@ import firebase from "firebase/app"
 import "firebase/firestore"
 import "firebase/auth"
 import 'firebase/functions'
+import 'firebase/storage'
 
 
   // Your web app's Firebase configuration
@@ -21,7 +22,11 @@ import 'firebase/functions'
 
   const auth = firebase.auth()
 
+  // instanciamos el storage (donde se guardan las imagenes)
+  const storage = firebase.storage()
+
+
   // esto sirve para leer (solo leer) las funciones)
   const functions = firebase.functions()
 
-  export {db, auth, firebase, functions}
+  export {db, auth, firebase, functions, storage}

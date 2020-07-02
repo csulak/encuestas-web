@@ -40,7 +40,7 @@ const PintarAutor = (props) => {
 
     return (
         <>
-            <span> {autor}</span>
+            <span> Creador: {autor}</span>
             {
                 (autor === usuario.email || usuario.rol === 'admin') && (
 

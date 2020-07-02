@@ -14,9 +14,23 @@ const Encuestas = () => {
                 {
                     encuestas.map(encuesta => (
                         <li className="list-group-item" key={encuesta.id}>
-                            <span>
+                            <h5>
                                 {encuesta.titulo}
-                            </span>
+                            </h5>
+
+                        <ul className="list-group">
+                            {
+                                encuesta.opciones.map ( enc => (
+                                    <li className="list-group-item" key={enc.orden}>
+                                        <span>{enc.nombreOpcion} - {enc.votos}</span>
+                                    </li>
+                                    )
+                                )
+                            }
+
+                        </ul>
+
+
                             <span>
                                 <PintarAutor referencia={encuesta.autor} idEncuesta={encuesta.id}/>
                             </span>

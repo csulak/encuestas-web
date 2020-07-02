@@ -8,24 +8,28 @@ const AgregarEncuestas = () => {
 
 
     const [titulo, setTitulo] = React.useState('')
-    const [paginas, setPaginas] = React.useState('')
+
+    const [opcion, setOpcion] = React.useState('')
+    const [opciones, setOpciones] = React.useState([])
 
     const {usuario} = React.useContext(UsuarioContext)
     const {fetchEncuestas} = React.useContext(EncuestasContext)
 
-    const agregarEncuesta = (e) => {
+
+    const crearEncuesta = (e) => {
 
         e.preventDefault()
 
-        if(!titulo.trim() || !paginas.trim()){
+        if(!titulo.trim() || opciones.length === 0){
             console.log("campos vacios")
             return
         }
 
         db.collection('encuestas').add({
             titulo: titulo,
-            paginas: paginas,
             uidAutor: usuario.uid,
+            opciones: opciones,
+            votantes: [],
             autor: db.collection('usuarios').doc(usuario.email)
         })
             .then(doc => {
@@ -35,13 +39,34 @@ const AgregarEncuestas = () => {
             .catch(error => console.log(error))
 
         setTitulo('')
-        setPaginas('')
+        setOpciones([])
     }    
+
+
+    const agregarOpcion = () => {
+
+        if(!opcion.trim()){
+            console.log("Nombre Vacio")
+            return
+        }
+
+
+
+        setOpciones([
+            ...opciones,
+            {
+                orden: opciones.length,
+                nombreOpcion: opcion,
+                votos: 0
+        }])
+
+        setOpcion('')
+    }
 
     return (
         <div className="mt-5">
             <h3>Agregar Encuestas</h3>
-            <form onSubmit={agregarEncuesta}>
+            <form onSubmit={crearEncuesta}>
                 <input 
                     type="text" 
                     className="form-control mb-2"
@@ -53,12 +78,29 @@ const AgregarEncuestas = () => {
                 <input 
                     type="text" 
                     className="form-control mb-2"
-                    placeholder="ingresa paginas"
-                    onChange={ (e) => setPaginas(e.target.value)}
-                    value={paginas}
-
+                    placeholder="ingresa una opcion"
+                    onChange={ (e) => setOpcion(e.target.value)}
+                    value={opcion}
                 />
-                <button type="submit" className="btn btn-primary">Agregar</button>
+
+                <button 
+                    className="btn btn-dark" 
+                    type="button" 
+                    onClick={ () => agregarOpcion()}
+                >
+                    Agregar opcion
+                </button>
+
+                <ul className="list-group">
+                    {
+                        opciones.map((opc) => (
+                            <p key={opc.orden}>opcion {opc.orden} - {opc.nombreOpcion}</p>
+                        ))
+                    }
+                </ul>
+
+
+                <button type="submit" className="btn btn-primary mt-2">Crear Encuesta</button>
             </form>
         </div>
     )

@@ -3,9 +3,13 @@ import React from 'react'
 import {UsuarioContext} from "../context/UsuarioProvider"
 import { auth } from '../firebase'
 
+import {NavLink} from 'react-router-dom'
+
 const Navbar = () => {
 
     const {usuario, iniciarSesion, cerrarSesion} = React.useContext(UsuarioContext)
+
+
 
     return (
         <div className="navbar navbar-dark bg-dark">
@@ -24,6 +28,16 @@ const Navbar = () => {
 
                         )
                     }
+
+                    {
+                        usuario.rol === 'admin' && <NavLink className="btn btn-dark mr-2" to="/admin" exact>admin</NavLink>
+                    }
+
+                    {
+                        usuario.rol === 'autor' && <NavLink className="btn btn-dark mr-2" to="/encuestador" exact>encuestador</NavLink>
+                    }
+
+                <NavLink className="btn btn-dark mr-2" to="/" exact>encuestas</NavLink>
 
                 </div>
 

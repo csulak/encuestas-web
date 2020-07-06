@@ -5,8 +5,6 @@ import {UsuarioContext} from "../context/UsuarioProvider"
 import {db} from "../firebase"
 
 
-
-
 const VotarEncuesta = (props) => {
 
     const {encuestas} = React.useContext(EncuestasContext)
@@ -15,46 +13,26 @@ const VotarEncuesta = (props) => {
     const {usuario} = React.useContext(UsuarioContext)
 
 
-
     const votarEncuesta = async(idEncuesta, nombreOpcion) => {
         try {
+                //obtengo la encuesta que voy a agregarle un voto
+                const encuestaAModificar = encuestas.filter(encuesta => encuesta.id === idEncuesta)[0]
+                    
+                //le agrego un voto a la opcion que eligio el usuario
+                const votosModificados= encuestaAModificar.opciones.map(opc => opc.nombreOpcion !== nombreOpcion ? opc : {
+                        nombreOpcion: opc.nombreOpcion,
+                        orden: opc.orden,
+                        votos: opc.votos + 1  
+                    })
+
+                console.log("votos modificados list: ", votosModificados)
     
-    
-            const encuestaAModificarVoto = encuestas.filter(encues => encues.id === idEncuesta)[0]
-
-            const prololo = encuestas.map(encuestin => encuestin.id !== idEncuesta ? encuestin : (
-                encuestin.opciones.map(opc => opc.nombreOpcion !== nombreOpcion ? opc : {
-                    nombreOpcion: opc.nombreOpcion,
-                    orden: opc.orden,
-                    votos: opc.votos + 1  
-                })
-                
-                ))
-
-                console.log("que flasheamo? :", prololo)
-
-                const arrayPlano = [1,2,3]
-
-                console.log("array plano: ", arrayPlano)
-
-            const opcionesDeEncuestaANoModificarVoto = encuestaAModificarVoto.opciones.filter(opci => opci.nombreOpcion !== nombreOpcion)
-            
-            const opcionDeEncuestaAmodificarVoto = encuestaAModificarVoto.opciones.filter(opci => opci.nombreOpcion === nombreOpcion)[0]
-    
-            console.log("votame esta: ", encuestaAModificarVoto)
-    
+            //agrego una nueva lista de las opciones con el nuevo voto que se agrego
+            //agrego a la lista de votantes el uid del usuario que acaba de votar en la encuesta
             await db.collection('encuestas').doc(idEncuesta).update({
-                // opciones: [
-                //     ...opcionesDeEncuestaANoModificarVoto,
-                //     {
-                //         nombreOpcion: opcionDeEncuestaAmodificarVoto.nombreOpcion,
-                //         orden: opcionDeEncuestaAmodificarVoto.orden,
-                //         votos: opcionDeEncuestaAmodificarVoto.votos + 1
-                //     }
-                // ],
-                opciones: prololo.values(),
+                opciones: votosModificados,
                 votantes:[
-                    ...encuestaAModificarVoto.votantes,
+                    ...encuestaAModificar.votantes,
                     usuario.uid
                 ]
             })

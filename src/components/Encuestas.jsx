@@ -37,16 +37,29 @@ const Encuestas = () => {
 
                             </ul>
 
-                                {/* si el usuario ya voto la encuesta se muestra el cartel */}
-                            {
-                                (usuario.email && encuesta.votantes.includes(usuario.uid) ) && (
-                                <span className="text-primary">Votaste esta encuesta</span>
-                                )
-                            }
+                            <div>
+                                <div>
+                                    {
+                                        // si el usuario ya voto la encuesta se muestra el cartel   
+                                        (usuario.email && encuesta.votantes.includes(usuario.uid) ) && (
+                                        <span className="text-primary">Votaste esta encuesta</span>
+                                        )
+                                    }
+                                </div>
 
-                            <span>
-                                <PintarAutor referencia={encuesta.autor} idEncuesta={encuesta.id}/>
-                            </span>
+                                <div>
+                                    <span>cantidad de usuarios que votaron: {encuesta.votantes.length}</span>
+                                </div>
+                                    
+                                <div>
+                                    <span>
+                                        <PintarAutor referencia={encuesta.autor} idEncuesta={encuesta.id}/>
+                                    </span>
+
+                                </div>
+                                
+                            </div>
+                            
                         </li>
                     ))
                 }

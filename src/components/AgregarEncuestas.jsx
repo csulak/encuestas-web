@@ -8,28 +8,46 @@ const AgregarEncuestas = () => {
 
 
     const [titulo, setTitulo] = React.useState('')
+    const [errorTitulo, setErrorTitulo] = React.useState('')
 
     const [opcion, setOpcion] = React.useState('')
+    const [errorOpcion, setErrorOpcion] = React.useState('')
+
     const [opciones, setOpciones] = React.useState([])
+    const [errorOpciones, setErrorOpciones] = React.useState([])
 
     const {usuario} = React.useContext(UsuarioContext)
     const {fetchEncuestas} = React.useContext(EncuestasContext)
 
+    const [categoria, setCategoria] = React.useState('general')
+
 
     const crearEncuesta = (e) => {
+        setErrorOpcion('')
+        setErrorTitulo('')
 
         e.preventDefault()
 
-        if(!titulo.trim() || opciones.length === 0){
+        if(!titulo.trim()){
             console.log("campos vacios")
+            setErrorTitulo("Ingresa un titulo.")
             return
         }
 
+
+        if(opciones.length === 0){
+            console.log("campos vacios")
+            setErrorOpciones("Ingresa al menos una opcion.")
+            return
+        }
+        
+        
         db.collection('encuestas').add({
             titulo: titulo,
             uidAutor: usuario.uid,
             opciones: opciones,
             votantes: [],
+            categoria: categoria,
             autor: db.collection('usuarios').doc(usuario.email)
         })
             .then(doc => {
@@ -44,11 +62,16 @@ const AgregarEncuestas = () => {
 
 
     const agregarOpcion = () => {
+        setErrorOpcion('')
 
         if(!opcion.trim()){
             console.log("Nombre Vacio")
+            setErrorOpciones('')
+            setErrorOpcion("Elija un nombre para la opcion.")
             return
         }
+
+        setErrorOpciones('')
 
 
 
@@ -67,13 +90,32 @@ const AgregarEncuestas = () => {
         <div className="mt-5">
             <h3>Agregar Encuestas</h3>
             <form onSubmit={crearEncuesta}>
+
+                <h5>Seleccione una categoria</h5>
+
+                <select id="categoriaId" value={categoria} onChange={(e) => setCategoria(e.target.value)}>
+                    <option value="general">General</option>
+                    <option value="deporte">Deporte</option>
+                    <option value="politica">Politica</option>
+                    <option value="duda_existencial">Duda Existencial</option>
+                </select>
+
                 <input 
                     type="text" 
-                    className="form-control mb-2"
+                    className="form-control my-2"
                     placeholder="ingresa un titulo"
                     onChange={ (e) => setTitulo(e.target.value)}
                     value={titulo}
                 />
+
+                {
+                    errorTitulo && (
+                        <span className="text-danger text-small d-block mb-2">
+                            {errorTitulo} 
+                        </span>
+                    )
+                
+                }
 
                 <input 
                     type="text" 
@@ -82,6 +124,16 @@ const AgregarEncuestas = () => {
                     onChange={ (e) => setOpcion(e.target.value)}
                     value={opcion}
                 />
+
+                {
+                    (opciones.length === 0  || errorOpciones || errorOpcion) && (
+                        <span className="text-danger text-small d-block mb-2">
+                            {errorOpcion} {errorOpciones} 
+                        </span>
+                    )
+                
+                }
+
 
                 <button 
                     className="btn btn-dark" 

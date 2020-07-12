@@ -19,7 +19,7 @@ const Encuestas = () => {
                     encuestas.map(encuesta => (
                         <li className="list-group-item" key={encuesta.id}>
                             <h5>
-                                {encuesta.titulo}
+                                {encuesta.titulo} (Categoria: {encuesta.categoria})
                             </h5>
 
                             <ul className="list-group">

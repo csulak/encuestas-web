@@ -27,3 +27,22 @@ en database crear las colecciones
 
 
 una vez que termino y levantaste todo. en firebase en Database cambiar las reglas para agregar seguridad
+
+
+
+librerias instaladas
+
+
+- npm i redux
+
+- npm i react-redux
+
+- npm i redux-devtools
+
+- npm i redux-thunk
+
+- npm i axios
+
+- npm install react-router-dom
+
+- npm i firebase
